@@ -1,0 +1,16 @@
+{
+  "extends": "plasmo/templates/tsconfig.base",
+  "exclude": ["node_modules"],
+  "include": [".plasmo/index.d.ts", "./**/*.ts", "./**/*.tsx", "tailwind.config.ts", "trpc.ts"],
+   "compilerOptions": {
+    "strictNullChecks": true,
+    "moduleResolution":"Bundler",
+    "jsx": "react-jsx",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["../../apps/browser-extension/*"],
+      "@server/*": ["../../apps/server/src/*"],
+    },
+  },
+
+}

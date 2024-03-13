@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SquadMemberRole {
+  Owner
+  ADMIN
+  USER
+}
+
+model Post {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  title        String   @db.VarChar(255)
+  content      String?
+  originalLink String
+  tags         String[]
+  upvotes      Int      @default(0)
+  views        Int      @default(0)
+  published    Boolean  @default(false)
+  authorId     Int
+  author       User     @relation(fields: [authorId], references: [id])
+  squadId      Int?
+  squad        Squad?   @relation(fields: [squadId], references: [id])
+}
+
+model User {
+  id         Int             @id @default(autoincrement())
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  name       String
+  screenName String          @unique
+  email      String?
+  bio        String?
+  posts      Post[]
+  squads     UsersOnSquads[]
+}
+
+model Squad {
+  id        Int             @id @default(autoincrement())
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  name      String          @db.VarChar(255)
+  tags      String[]
+  members   UsersOnSquads[]
+  posts     Post[]
+}
+
+model UsersOnSquads {
+  id      Int             @id @default(autoincrement())
+  userId  Int
+  squadId Int
+  user    User            @relation(fields: [userId], references: [id])
+  squad   Squad           @relation(fields: [squadId], references: [id])
+  role    SquadMemberRole
+
+  @@unique([userId, squadId])
+}
