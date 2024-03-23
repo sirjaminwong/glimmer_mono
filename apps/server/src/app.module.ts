@@ -3,10 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TrpcModule } from '@server/trpc/trpc.module';
 import { UserModule } from './user/user.module';
-import { BookmarkModule } from './bookmark/bookmark.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
-  imports: [TrpcModule, UserModule, BookmarkModule],
+  imports: [TrpcModule, UserModule, EventsModule],
   controllers: [AppController],
   providers: [AppService],
 })
