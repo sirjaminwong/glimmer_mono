@@ -3,11 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./card": "./src/card.tsx",
     "./styles.css": "./dist/index.css",
     "./code": "./src/code.tsx",
-    "./button": "./src/components/ui/button.tsx",
-    "./badge": "./src/components/ui/badge.tsx"
+    "./components": "./src/components/ui/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -31,6 +29,9 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
