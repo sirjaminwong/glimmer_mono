@@ -1,7 +1,6 @@
-import { Button } from "@repo/ui/button";
-import { Badge } from "@repo/ui/badge";
-import { Camera } from "lucide-react";
-import ClientSide from "./client-side";
+import { Badge, Camera } from "lucide-react";
+import ClientSide from "../modules/common/components/client-side";
+import { Button } from "@repo/ui/components";
 
 export default async function Page(): Promise<JSX.Element> {
   return (
