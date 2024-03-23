@@ -1,9 +1,9 @@
 -- CreateEnum
-CREATE TYPE "SquadMemberRole" AS ENUM ('Owner', 'ADMIN', 'USER');
+CREATE TYPE "SquadMemberRole" AS ENUM ('OWNER', 'ADMIN', 'USER');
 
 -- CreateTable
 CREATE TABLE "Post" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" VARCHAR(255) NOT NULL,
@@ -13,15 +13,15 @@ CREATE TABLE "Post" (
     "upvotes" INTEGER NOT NULL DEFAULT 0,
     "views" INTEGER NOT NULL DEFAULT 0,
     "published" BOOLEAN NOT NULL DEFAULT false,
-    "authorId" INTEGER NOT NULL,
-    "squadId" INTEGER,
+    "authorId" TEXT NOT NULL,
+    "squadId" TEXT,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
@@ -34,10 +34,11 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Squad" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" VARCHAR(255) NOT NULL,
+    "description" TEXT NOT NULL,
     "tags" TEXT[],
 
     CONSTRAINT "Squad_pkey" PRIMARY KEY ("id")
@@ -45,9 +46,9 @@ CREATE TABLE "Squad" (
 
 -- CreateTable
 CREATE TABLE "UsersOnSquads" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "squadId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "squadId" TEXT NOT NULL,
     "role" "SquadMemberRole" NOT NULL,
 
     CONSTRAINT "UsersOnSquads_pkey" PRIMARY KEY ("id")
