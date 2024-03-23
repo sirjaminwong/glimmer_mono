@@ -9,7 +9,7 @@ import {
   FastifyTRPCPluginOptions,
 } from '@trpc/server/adapters/fastify';
 import { NestFastifyApplication } from '@nestjs/platform-fastify/interfaces';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class TrpcRouter {
@@ -25,6 +25,11 @@ export class TrpcRouter {
           screenName: z.string(),
         }),
       )
+      .output(
+        z.object({
+          name: z.string().optional(),
+        }),
+      )
       .query(async ({ input }) => {
         const { screenName } = input;
         const user = await this.prisma.user.findUnique({
@@ -33,9 +38,10 @@ export class TrpcRouter {
           },
         });
         return {
-          user: user,
+          name: user?.name,
         };
       }),
+
     userCreate: this.trpc.procedure
       .input(
         z.object({
@@ -59,8 +65,146 @@ export class TrpcRouter {
       }),
   });
 
+  postRouter = this.trpc.router({
+    getPosts: this.trpc.procedure
+      .input(
+        z.object({
+          userId: z.string().optional(),
+          squadId: z.string().optional(),
+        }),
+      )
+      .query(async ({ input }) => {
+        return await this.prisma.post.findMany({
+          where: {
+            authorId: input.userId,
+            squadId: input.squadId,
+          },
+        });
+      }),
+
+    getPost: this.trpc.procedure
+      .input(
+        z.object({
+          id: z.string(),
+        }),
+      )
+      .query(async ({ input }) => {
+        const post = await this.prisma.post.findUnique({
+          where: {
+            id: input.id,
+          },
+        });
+        if (!post) {
+          throw new Error('Post not found');
+        }
+        return {
+          id: post.id,
+          title: post.title,
+          content: post.content,
+          originalLink: post.originalLink,
+        };
+      }),
+
+    postCreate: this.trpc.procedure
+      .input(
+        z.object({
+          title: z.string(),
+          content: z.string(),
+          originalLink: z.string(),
+          authorId: z.string(),
+          squadId: z.string().optional(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const post = await this.prisma.post.create({
+          data: input,
+        });
+        return {
+          post: post,
+        };
+      }),
+
+    vote: this.trpc.procedure
+      .input(
+        z.object({
+          postId: z.string(),
+          userId: z.string(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const post = await this.prisma.post.update({
+          where: {
+            id: input.postId,
+          },
+          data: {
+            upvotes: {
+              increment: 1,
+            },
+          },
+        });
+        return {
+          count: post.upvotes,
+        };
+      }),
+  });
+
+  squadRouter = this.trpc.router({
+    getAllSquads: this.trpc.procedure.query(async () => {
+      const squads = await this.prisma.squad.findMany();
+      return squads;
+    }),
+
+    getSquad: this.trpc.procedure
+      .input(
+        z.object({
+          id: z.string(),
+        }),
+      )
+      .output(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+        }),
+      )
+      .query(async ({ input }) => {
+        const squad = await this.prisma.squad.findUnique({
+          where: {
+            id: input.id,
+          },
+        });
+        if (!squad) {
+          throw new Error('Squad not found');
+        }
+        return {
+          name: squad?.name,
+          description: squad?.description,
+        };
+      }),
+
+    create: this.trpc.procedure
+      .input(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const squad = await this.prisma.squad.create({
+          data: {
+            name: input.name,
+            description: input.description,
+          },
+        });
+        return {
+          squad: squad,
+        };
+      }),
+  });
+
   appRouter = this.trpc.router({
     user: this.userRouter,
+    squad: this.squadRouter,
+    post: this.postRouter,
   });
 
   async applyMiddleware(app: NestFastifyApplication) {
@@ -78,4 +222,4 @@ export class TrpcRouter {
   }
 }
 
-export type AppRouter = TrpcRouter[`appRouter`];
+export type AppRouter = TrpcRouter['appRouter'];
