@@ -8,7 +8,8 @@ export const createContext = ({
   res: CreateFastifyContextOptions['res'];
   user: { name: string | string[] };
 } => {
-  const user = { name: req.headers.username ?? 'anonymous' };
+  const user = { name: req.user?.screenName ?? 'anonymous' };
+  console.log(`trpc createContext  User: ${user}`, user);
   return { req, res, user };
 };
 export type Context = Awaited<ReturnType<typeof createContext>>;

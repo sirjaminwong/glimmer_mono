@@ -13,7 +13,9 @@ async function bootstrap() {
   );
   app.enableCors();
   const trpc = app.get(TrpcRouter);
-  trpc.applyMiddleware(app);
+  await trpc.applyMiddleware(app);
   await app.listen(process.env.PORT || 4000);
 }
-bootstrap();
+bootstrap().then(() => {
+  console.log(`Server is running on port ${process.env.PORT || 4000}`);
+});
