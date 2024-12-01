@@ -7,8 +7,9 @@ import {
   CardFooter,
   Button,
 } from "@repo/ui/components";
-import { Link, Eye } from "lucide-react";
+import { Link as LinkIcon, Eye } from "lucide-react";
 import { Vote } from "./vote";
+import Link from "next/link";
 
 export const PostCard = ({
   post,
@@ -36,19 +37,22 @@ export const PostCard = ({
           <span>{post.title}</span>
         </CardDescription>
       </CardHeader>
-      <CardContent className="h-46">
-        <span className="line-clamp-5">{post.content}</span>
-      </CardContent>
+      <Link href={`/apps/web/app/(main)/post/${post.id}`}>
+        <CardContent className="h-46">
+          <span className="line-clamp-5">{post.content}</span>
+        </CardContent>
+      </Link>
+
       <CardFooter className="flex justify-between">
         <Button variant="ghost" size="sm">
           <Vote postId={post.id} initCount={post.upvotes} />
         </Button>
         <Button variant="ghost" size="sm">
-          <Eye size="20" />
+          <Eye size="ee" />
           {post.views}
         </Button>
         <Button variant="ghost" size="sm">
-          <Link size="20" />
+          <LinkIcon size="20" />
         </Button>
       </CardFooter>
     </Card>

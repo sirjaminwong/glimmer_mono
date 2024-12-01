@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://jamin:123456@localhost:5432/glimmer?schema=public"
 }
 
 enum SquadMemberRole {
@@ -42,6 +42,7 @@ model User {
   email      String?
   bio        String?
   posts      Post[]
+  password   String          @default("defaultPassword")
   squads     UsersOnSquads[]
 }
 

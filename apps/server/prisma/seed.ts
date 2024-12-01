@@ -1,4 +1,4 @@
-import { PrismaClient, SquadMemberRole } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const mockUsers = [
   {
@@ -98,7 +98,7 @@ async function createSquads(userId: string) {
         description: squad.description,
         members: {
           create: {
-            role: SquadMemberRole.OWNER,
+            role: 'OWNER',
             user: {
               connect: {
                 id: userId,

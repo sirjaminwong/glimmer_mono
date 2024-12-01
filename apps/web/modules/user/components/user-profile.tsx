@@ -1,15 +1,33 @@
 "use client";
-
-import { useQuery } from "@tanstack/react-query";
-import { trpc } from "../../../app/trpc";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getProfile } from "../../auth/service";
+import { Button } from "@repo/ui/components";
+import { useRouter } from "next/navigation";
 
 const UserProfile = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { data } = useQuery({
-    queryKey: ["user", { screenName: "jamin" }],
-    queryFn: () => trpc.user.getUser.query({ screenName: "jaminst" }),
+    queryKey: ["profile"],
+    queryFn: getProfile,
   });
 
-  return <div>name: {JSON.stringify(data)}</div>;
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    queryClient.clear();
+    router.push("/login");
+  };
+
+  if (data) {
+    return (
+      <div>
+        <div>name: {JSON.stringify(data)}</div>
+        <Button onClick={handleLogout}>退出登录</Button>
+      </div>
+    );
+  }
+
+  return <Button onClick={() => router.push("/login")}>登录</Button>;
 };
 
 export default UserProfile;
