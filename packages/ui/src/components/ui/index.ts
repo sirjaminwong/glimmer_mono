@@ -10,6 +10,7 @@ export {
   SelectValue,
   SelectLabel,
 } from "./select";
+export { Toaster } from "./toaster";
 export { Button } from "./button";
 export {
   Card,
