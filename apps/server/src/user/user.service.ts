@@ -7,16 +7,22 @@ import { PrismaService } from 'src/prisma.service';
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    return this.prismaService.user.create({
+      data: {
+        name: createUserDto.username,
+        screenName: createUserDto.username,
+        password: createUserDto.password,
+      },
+    });
   }
 
   findAll() {
     return `This action returns all user`;
   }
 
-  findOne(id: string) {
+  async findOne(screenName: string) {
     return this.prismaService.user.findUnique({
-      where: { id },
+      where: { screenName },
     });
   }
 

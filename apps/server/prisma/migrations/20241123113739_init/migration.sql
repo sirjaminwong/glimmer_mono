@@ -28,6 +28,7 @@ CREATE TABLE "User" (
     "screenName" TEXT NOT NULL,
     "email" TEXT,
     "bio" TEXT,
+    "password" TEXT NOT NULL DEFAULT 'defaultPassword',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

@@ -1,6 +1,6 @@
 import { use } from "react";
-import { trpc } from "../../trpc";
-import { PostCard } from "../../../modules/post/components/post-card";
+import { trpc } from "../../../trpc";
+import { PostCard } from "../../../../modules/post/components/post-card";
 
 export default function Page({ params }: { params: { id: string } }) {
   const squad = use(trpc.squad.getSquad.query({ id: params.id }));

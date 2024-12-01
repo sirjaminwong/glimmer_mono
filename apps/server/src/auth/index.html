@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Template</title>
+    <!-- CSS 文件 -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #0078d4;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 页眉 -->
+    <header>
+        <h1>Welcome to My Website</h1>
+        <wx-open-launch-app id="launch-btn" appid="your-appid" extinfo="your-extinfo">
+            呜呜呜呜呜
+        </wx-open-launch-app>
+    </header>
+
+
+    <!-- JavaScript 文件 -->
+    <script>
+        const btn = document.getElementById('launch-btn');
+        btn.addEventListener('launch', function (e) {
+            console.log('success');
+        });
+        btn.addEventListener('error', function (e) {
+            console.log('fail', e.detail);
+        });
+        btn.addEventListener('click', function (e) {
+            console.log('click', e.detail);
+        });
+    </script>
+
+
+</body>
+
+</html>
